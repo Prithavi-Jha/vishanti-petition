@@ -25,6 +25,7 @@ import {
 import { useGrievance } from '../context/GrievanceContext';
 import { useTheme } from '../context/ThemeContext';
 import { UserRole } from '../types';
+import logo from '../assets/logo.png';
 
 interface NavbarProps {
   portalType: 'main' | 'staff';
@@ -228,7 +229,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="flex items-center gap-2.5 text-left group focus:outline-none"
           >
             <img
-              src="/assets/brand/logo.png"
+              src={logo}
               alt="The Vishanti Petition"
               className="h-11 w-auto object-contain"
             />

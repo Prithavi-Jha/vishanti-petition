@@ -1,8 +1,8 @@
+import 'dotenv/config';
 import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import * as dotenv from 'dotenv';
 import {
   seedDatabaseIfEmpty,
   fetchOfficials,
@@ -20,29 +20,41 @@ import {
   fetchDatabaseStats,
 } from './src/db/queries.ts';
 import { getOrCreateUser } from './src/db/users.ts';
-import { createPool } from './src/db/index.ts';
-
-dotenv.config();
+import { createPool, isPostgresConfigured } from './src/db/index.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
-  const PORT = Number(process.env.PORT) || 3000;
+  const PORT = Number(process.env.PORT) || 5000;
 
   app.use(express.json({ limit: '10mb' }));
 
   // Seed PostgreSQL database with initial officials, complaints, and audit entries if empty
-  await seedDatabaseIfEmpty();
+  if (isPostgresConfigured) {
+    await seedDatabaseIfEmpty();
+  } else {
+    console.info('PostgreSQL API is not configured. The frontend retains its existing Supabase connection.');
+  }
 
   // API Routes powered by PostgreSQL via Drizzle ORM
   app.get('/api/health', async (_req, res) => {
     res.json({
       status: 'ok',
-      database: 'PostgreSQL (Cloud SQL)',
+      database: isPostgresConfigured ? 'configured (connectivity not checked)' : 'not_configured',
       engine: 'Drizzle ORM',
     });
+  });
+
+  app.use('/api', (_req, res, next) => {
+    if (!isPostgresConfigured) {
+      res.status(503).json({
+        error: 'PostgreSQL API is not configured. Set SQL_HOST, SQL_USER, SQL_PASSWORD, and SQL_DB_NAME. The frontend uses its existing Supabase connection separately.',
+      });
+      return;
+    }
+    next();
   });
 
   app.get('/api/officials', async (_req, res) => {

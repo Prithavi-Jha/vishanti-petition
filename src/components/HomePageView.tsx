@@ -23,6 +23,8 @@ import {
 } from 'lucide-react';
 import { useGrievance } from '../context/GrievanceContext';
 import { useTheme } from '../context/ThemeContext';
+import logo from '../assets/logo.png';
+import landingBackground from '../assets/landingBackground.png';
 
 interface HomePageViewProps {
   onOpenLogin: (defaultTab?: 'main' | 'staff') => void;
@@ -81,7 +83,7 @@ export const HomePageView: React.FC<HomePageViewProps> = ({
         <div
           className="absolute inset-0 bg-cover bg-center opacity-100 pointer-events-none mix-blend-luminosity"
           style={{
-            backgroundImage: `url(/assets/brand/landingBackground.png)`,
+            backgroundImage: `url(${landingBackground})`,
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#091322]/90 via-[#091322]/95 to-[#091322]" />
@@ -93,7 +95,7 @@ export const HomePageView: React.FC<HomePageViewProps> = ({
             className="flex items-center text-left focus:outline-none"
           >
             <img
-              src="/assets/brand/logo.png"
+              src={logo}
               alt="The Vishanti Petition"
               className="h-12 sm:h-14 w-auto object-contain"
             />
@@ -585,7 +587,7 @@ export const HomePageView: React.FC<HomePageViewProps> = ({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <img
-              src="/assets/brand/logo.png"
+              src={logo}
               alt="The Vishanti Petition"
               className="h-10 w-auto object-contain"
             />

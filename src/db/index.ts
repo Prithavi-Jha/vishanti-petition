@@ -1,6 +1,14 @@
+import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import * as schema from './schema.ts';
+
+export const isPostgresConfigured = Boolean(
+  process.env.SQL_HOST &&
+  process.env.SQL_USER &&
+  process.env.SQL_PASSWORD &&
+  process.env.SQL_DB_NAME
+);
 
 // Add global connection pool caching to persist across hot-reloads
 declare global {

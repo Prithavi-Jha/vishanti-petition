@@ -1,0 +1,1 @@
+- [Imported service boundaries](imported-services.md) — preserve the imported Supabase project; separate PostgreSQL setup must not silently provision or seed a replacement.
